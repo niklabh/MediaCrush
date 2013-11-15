@@ -12,12 +12,56 @@ from .database import r, _k
 from .objects import File
 from .ratelimit import rate_limit_exceeded, rate_limit_update
 from .network import secure_ip
+from .processors import GifProcessor
 
 VIDEO_EXTENSIONS = set(['gif', 'ogv', 'mp4', 'webm'])
 AUDIO_EXTENSIONS = set(['mp3', 'ogg', 'oga'])
 EXTENSIONS = set(['png', 'jpg', 'jpe', 'jpeg', 'svg']) | VIDEO_EXTENSIONS | AUDIO_EXTENSIONS
 LOOP_EXTENSIONS = set(['gif'])
 AUTOPLAY_EXTENSIONS = set(['gif'])
+
+processing_needed = {
+    'image/gif': {
+        'formats': ['video/mp4', 'video/ogv', 'video/webm'],
+        'extras': ['image/png'],
+        'processor': GifProcessor()
+    },
+    'video/mp4': {
+        'formats': ['video/webm', 'video/ogv'],
+        'extras': ['image/png'],
+        'time': 600,
+    },
+    'video/webm': {
+        'formats': ['video/mp4', 'video/ogv'],
+        'extras': ['image/png'],
+        'time': 600,
+    },
+    'video/ogv': {
+        'formats': ['video/mp4', 'video/webm'],
+        'extras': ['image/png'],
+        'time': 600,
+    },
+    'image/jpeg': {
+        'formats': [],
+        'time': 5
+    },
+    'image/png': {
+        'formats': [],
+        'time': 60
+    },
+    'image/svg': {
+        'formats': [],
+        'time': 5
+    },
+    'audio/mp3': {
+        'formats': ['audio/ogg'],
+        'time': 120
+    },
+    'audio/ogg': {
+        'formats': ['audio/oga','audio/mp3'],
+        'time': 120
+    }
+}
 
 class URLFile(object):
     filename = None
@@ -59,61 +103,6 @@ class URLFile(object):
         self.filename = list(reversed(url.split("/")))[0]
 
         return True
-
-processing_needed = {
-    'gif': {
-        'formats': ['mp4', 'ogv', 'webm'],
-        'extras': ['png'],
-        'time': 300,
-    },
-    'mp4': {
-        'formats': ['webm', 'ogv'],
-        'extras': ['png'],
-        'time': 600,
-    },
-    'webm': {
-        'formats': ['mp4', 'ogv'],
-        'extras': ['png'],
-        'time': 600,
-    },
-    'ogv': {
-        'formats': ['mp4', 'webm'],
-        'extras': ['png'],
-        'time': 600,
-    },
-    'jpg': {
-        'formats': [],
-        'time': 5
-    },
-    'jpe': {
-        'formats': [],
-        'time': 5
-    },
-    'jpeg': {
-        'formats': [],
-        'time': 5
-    },
-    'png': {
-        'formats': [],
-        'time': 60
-    },
-    'svg': {
-        'formats': [],
-        'time': 5
-    },
-    'mp3': {
-        'formats': ['ogg'],
-        'time': 120
-    },
-    'ogg': {
-        'formats': ['oga','mp3'],
-        'time': 120
-    },
-    'oga': {
-        'formats': ['mp3'],
-        'time': 120
-    }
-}
 
 def allowed_file(filename):
     return '.' in filename and extension(filename) in EXTENSIONS
