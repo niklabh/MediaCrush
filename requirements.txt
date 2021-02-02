@@ -2,7 +2,7 @@ Flask==0.10.1
 Flask-Bcrypt==0.5.2
 Flask-Classy==0.6.3
 Flask-Markdown==0.3
-Jinja2==2.7
+Jinja2==2.11.3
 Markdown==2.3.1
 MarkupSafe==0.18
 Werkzeug==0.12
