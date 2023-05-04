@@ -1,4 +1,4 @@
-Flask==0.10.1
+Flask==2.2.5
 Flask-Bcrypt==0.5.2
 Flask-Classy==0.6.3
 Flask-Markdown==0.3
