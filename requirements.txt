@@ -16,6 +16,6 @@ pep8==1.4.6
 py-bcrypt==0.3
 pyScss==1.2.0.post3
 redis==2.7.6
-requests==2.0.0
+requests==2.32.4
 six==1.4.1
 wsgiref==0.1.2
